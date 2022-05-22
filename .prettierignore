@@ -6,4 +6,6 @@
 **/*.svg
 **/*.sh
 
+commitlint.config.js
+
 /public/*
