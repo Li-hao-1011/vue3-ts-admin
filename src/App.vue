@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <el-button type="primary">Primary</el-button>
+    <el-input />
     <h2>{{ $store.state.name }}</h2>
     <router-link to="/login">登录</router-link>
     <router-link to="/main">首页</router-link>
