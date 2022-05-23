@@ -2,6 +2,7 @@ const { defineConfig } = require('@vue/cli-service')
 const path = require('path')
 module.exports = defineConfig({
   transpileDependencies: true,
+  publicPath: './',
   // 配置方式一：vueCLI的属性
   outputDir: 'build',
   // 配置方式二：与webpack属性完全一致，最后会进行合并
