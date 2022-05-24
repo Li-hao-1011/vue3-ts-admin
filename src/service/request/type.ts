@@ -1,15 +1,15 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-interface LHInterceptors {
+interface LHInterceptors<T = AxiosResponse> {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
   requestInterceptorCatch?: (err: any) => any
 
-  responseInterceptor?: (config: AxiosResponse) => AxiosResponse
+  responseInterceptor?: (config: T) => T
   responseInterceptorCatch?: (err: any) => any
 }
 
-interface LHRequestConfig extends AxiosRequestConfig {
-  interceptors?: LHInterceptors
+interface LHRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
+  interceptors?: LHInterceptors<T>
   showLoading?: boolean
 }
 

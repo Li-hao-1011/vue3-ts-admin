@@ -4,18 +4,23 @@ import type { AxiosInstance } from 'axios'
 import { LHInterceptors, LHRequestConfig } from './type'
 
 import { ElLoading } from 'element-plus'
-// import type {  } from 'element-plus/es/components/loading/src/lo'
+import { LoadingInstance } from 'element-plus/lib/components/loading/src/loading'
 
+/**
+ * 默认显示 loading
+ */
+const DEFAULT_LOADING = false
 class LhRequest {
   instance: AxiosInstance
   interceptors?: LHInterceptors
   showLoading: boolean
-  loading?: any
+  loading?: LoadingInstance
 
   constructor(config: LHRequestConfig) {
     this.instance = axios.create(config)
     this.interceptors = config.interceptors
-    this.showLoading = config.showLoading ?? true
+
+    this.showLoading = config.showLoading ?? DEFAULT_LOADING
 
     // request拦截器
     this.instance.interceptors.request.use(
@@ -36,23 +41,29 @@ class LhRequest {
         if (this.showLoading) {
           this.loading = ElLoading.service({
             lock: true,
-            target: '正在加载...',
-            background: 'rgba(0,0,0,0.5)'
+            text: 'Loading',
+            background: 'rgba(0, 0, 0, 0.7)'
           })
         }
 
         return config
       },
-      (err) => err
+      (err) => {
+        return err
+      }
     )
     this.instance.interceptors.response.use(
       (res) => {
         console.log('全局response拦截器')
+
         if (this.showLoading) {
-          this.loading?.close()
+          setTimeout(() => {
+            this.loading?.close()
+          }, 1000)
         }
+
         const { data } = res
-        if (data.returnCode === '-1001') {
+        if (data?.returnCode === '-1001') {
           console.log('请求失败')
         } else {
           return res.data
@@ -60,7 +71,9 @@ class LhRequest {
       },
       (err) => {
         if (this.showLoading) {
-          this.loading?.close()
+          setTimeout(() => {
+            this.loading?.close()
+          }, 1000)
         }
         if (err.response.status === 404) {
           console.log('404 Error')
@@ -70,28 +83,42 @@ class LhRequest {
     )
   }
 
-  request(config: LHRequestConfig): void {
-    if (config.interceptors?.requestInterceptor) {
-      config = config.interceptors.requestInterceptor(config)
-    }
-    if (!config.showLoading === true) {
-      this.showLoading = false
-    }
-
-    this.instance.request(config).then(
-      (res) => {
-        if (config.interceptors?.responseInterceptor) {
-          res = config.interceptors.responseInterceptor(res)
-        }
-
-        console.log(res)
-
-        this.showLoading = true
-      },
-      (err) => {
-        console.log(err)
+  request<T>(config: LHRequestConfig<T>): Promise<T> {
+    return new Promise((resolve, reject) => {
+      if (config.interceptors?.requestInterceptor) {
+        config = config.interceptors.requestInterceptor(config)
       }
-    )
+
+      if (config.showLoading === !DEFAULT_LOADING) {
+        this.showLoading = config.showLoading
+      }
+
+      this.instance.request<any, T>(config).then(
+        (res) => {
+          if (config.interceptors?.responseInterceptor) {
+            res = config.interceptors.responseInterceptor(res)
+          }
+          this.showLoading = DEFAULT_LOADING
+          resolve(res)
+        },
+        (err) => {
+          this.showLoading = DEFAULT_LOADING
+          reject(err)
+        }
+      )
+    })
+  }
+
+  get<T>(config: LHRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'GET' })
+  }
+
+  post<T>(config: LHRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' })
+  }
+
+  patch<T>(config: LHRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
 

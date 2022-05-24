@@ -1,11 +1,13 @@
 import { createApp } from 'vue'
+import 'normalize.css'
+import '@/assets/css/index.less'
 
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import { globalRegister } from './global/index'
 
-import lhRequest from './service/index'
+// import lhRequest from './service/index'
 
 const app = createApp(App)
 app.use(router)
@@ -25,28 +27,56 @@ app.use(globalRegister)
 
 app.mount('#app')
 
-console.log(process.env.VUE_APP_BASE_URL)
-console.log(process.env.VUE_APP_BASE_NAME)
+// console.log(process.env.VUE_APP_BASE_URL)
+// console.log(process.env.VUE_APP_BASE_NAME)
 
-lhRequest.request({
-  url: '/home/multidata',
-  method: 'GET',
-  interceptors: {
-    requestInterceptor: (config) => {
-      console.log('单独请求的 requestInterceptor')
-      return config
-    },
-    responseInterceptor: (config) => {
-      console.log('单独请求的 responseInterceptor')
-      return config
-    }
-  },
-  showLoading: true
-})
+/* type RequestType = {
+  success: boolean
+  data: any
+  returnCode: string
+}
 
-/* setTimeout(() => {
-  lhRequest.request({
+lhRequest
+  .request<RequestType>({
     url: '/home/multidata',
-    method: 'GET'
+    method: 'GET',
+    interceptors: {
+      requestInterceptor: (config) => {
+        console.log('单独请求的 requestInterceptor')
+        return config
+      },
+      responseInterceptor: (config) => {
+        console.log('单独请求的 responseInterceptor')
+        return config
+      }
+    }
+    // showLoading: true
   })
-}, 2000) */
+  .then((res) => {
+    console.log('1', res)
+  })
+  .catch((err) => {
+    console.log('1', err)
+  })
+
+lhRequest
+  .get<RequestType>({
+    url: '/home/multidata',
+    interceptors: {
+      requestInterceptor: (config) => {
+        console.log('单独请求的 requestInterceptor')
+        return config
+      },
+      responseInterceptor: (config) => {
+        console.log('单独请求的 responseInterceptor')
+        return config
+      }
+    }
+    // showLoading: true
+  })
+  .then((res) => {
+    console.log('2', res)
+  })
+  .catch((err) => {
+    console.log('2', err)
+  }) */
