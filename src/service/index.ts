@@ -11,13 +11,13 @@ const lhRequest = new LHRequest({
       // if (token) {
       // config.headers.token = token
       // }
-      console.log('局部请求拦截器')
+      // console.log('局部请求拦截器')
       return config
     },
     requestInterceptorCatch: (err) => err,
 
     responseInterceptor: (config) => {
-      console.log('局部响应拦截器')
+      // console.log('局部响应拦截器')
 
       return config
     },

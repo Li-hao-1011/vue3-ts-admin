@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <el-form :model="phone" ref="ruleFormRef" label-width="65px" class="demo-ruleForm">
-      <el-form-item label="账 号:">
+  <div class="login-phone">
+    <el-form :model="phone" :rules="phoneRules" ref="ruleFormRef" label-width="75px">
+      <el-form-item label="手机号:" prop="phone">
         <el-input v-model="phone.mobilePhoneNumber" />
       </el-form-item>
-      <el-form-item label="密 码:">
-        <el-input v-model="phone.verificationCode" />
-        <el-button type="primary">获取验证码</el-button>
+      <el-form-item label="验证码:" prop="verificationCode">
+        <div class="verification-code">
+          <el-input v-model="phone.verificationCode" style="width: 100px" />
+          <el-button type="primary">获取验证码</el-button>
+        </div>
       </el-form-item>
     </el-form>
   </div>
@@ -14,6 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
+import { PHONE_RULES as phoneRules } from '../config/phone-config'
 
 export default defineComponent({
   name: 'LoginPhone',
@@ -22,9 +25,17 @@ export default defineComponent({
       mobilePhoneNumber: '',
       verificationCode: ''
     })
-    return { phone }
+    return { phone, phoneRules }
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.login-phone {
+  .verification-code {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+</style>

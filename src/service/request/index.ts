@@ -36,7 +36,7 @@ class LhRequest {
     // 所有实例中都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('全局request拦截器')
+        // console.log('全局request拦截器')
 
         if (this.showLoading) {
           this.loading = ElLoading.service({
@@ -54,7 +54,7 @@ class LhRequest {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('全局response拦截器')
+        // console.log('全局response拦截器')
 
         if (this.showLoading) {
           setTimeout(() => {
@@ -76,7 +76,7 @@ class LhRequest {
           }, 1000)
         }
         if (err.response.status === 404) {
-          console.log('404 Error')
+          // console.log('404 Error')
         }
         return err
       }
