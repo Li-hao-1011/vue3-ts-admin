@@ -40,7 +40,6 @@ export default defineComponent({
 
     const formRef = ref<InstanceType<typeof ElForm>>()
     const loginAction = (isKeepPassword: boolean) => {
-      console.log('开始登录')
       formRef.value?.validate((valid) => {
         if (!valid) {
           return

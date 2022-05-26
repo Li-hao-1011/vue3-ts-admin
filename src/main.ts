@@ -7,7 +7,7 @@ import router from './router'
 import store from './store'
 import { globalRegister } from './global/index'
 
-// import lhRequest from './service/index'
+import { setupStore } from './store/index'
 
 const app = createApp(App)
 app.use(router)
@@ -25,58 +25,6 @@ app.use(store)
 app.use(globalRegister)
 // registerApp(app)
 
+setupStore()
+
 app.mount('#app')
-
-// console.log(process.env.VUE_APP_BASE_URL)
-// console.log(process.env.VUE_APP_BASE_NAME)
-
-/* type RequestType = {
-  success: boolean
-  data: any
-  returnCode: string
-}
-
-lhRequest
-  .request<RequestType>({
-    url: '/home/multidata',
-    method: 'GET',
-    interceptors: {
-      requestInterceptor: (config) => {
-        console.log('单独请求的 requestInterceptor')
-        return config
-      },
-      responseInterceptor: (config) => {
-        console.log('单独请求的 responseInterceptor')
-        return config
-      }
-    }
-    // showLoading: true
-  })
-  .then((res) => {
-    console.log('1', res)
-  })
-  .catch((err) => {
-    console.log('1', err)
-  })
-
-lhRequest
-  .get<RequestType>({
-    url: '/home/multidata',
-    interceptors: {
-      requestInterceptor: (config) => {
-        console.log('单独请求的 requestInterceptor')
-        return config
-      },
-      responseInterceptor: (config) => {
-        console.log('单独请求的 responseInterceptor')
-        return config
-      }
-    }
-    // showLoading: true
-  })
-  .then((res) => {
-    console.log('2', res)
-  })
-  .catch((err) => {
-    console.log('2', err)
-  }) */

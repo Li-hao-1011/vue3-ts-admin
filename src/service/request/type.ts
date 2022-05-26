@@ -11,6 +11,7 @@ interface LHInterceptors<T = AxiosResponse> {
 interface LHRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: LHInterceptors<T>
   showLoading?: boolean
+  headers?: any
 }
 
 export { LHInterceptors, LHRequestConfig }

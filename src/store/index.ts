@@ -13,9 +13,10 @@ const store = createStore<IRootState>({
   getters: {},
   actions: {},
   mutations: {},
-  modules: {
-    login
-  }
+  modules: { login }
 })
 
+export const setupStore = () => {
+  store.dispatch('login/loadLocalLogin')
+}
 export default store
