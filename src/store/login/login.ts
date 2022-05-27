@@ -16,7 +16,7 @@ import localCatch from '@/utils/cache'
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
-    return { token: '', userInfo: {}, userMenu: {} }
+    return { token: '', userInfo: {}, userMenu: [] }
   },
   getters: {},
   actions: {

@@ -5,7 +5,7 @@ import { IAccount, IDataType, ILoginResult } from './types'
 enum LoginURL {
   AccountLogin = '/login',
   LoginUserInfo = '/users/',
-  UserMenus = '/menu/'
+  UserMenus = '/role/'
 }
 
 export function accountLoginRequest(account: IAccount) {
@@ -24,6 +24,6 @@ export function requestUserInfoById(id: number) {
 
 export function requestUserMenusById(id: number) {
   return server.get<IDataType>({
-    url: LoginURL.UserMenus + id
+    url: LoginURL.UserMenus + id + '/menu'
   })
 }

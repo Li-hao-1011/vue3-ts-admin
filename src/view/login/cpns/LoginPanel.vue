@@ -51,7 +51,7 @@ export default defineComponent({
   setup() {
     const currentTab = ref<string>('account')
 
-    const isKeepPassword = ref<boolean>(false)
+    const isKeepPassword = ref<boolean>(true)
     // 获取组件实例
     // 组件实例的类型 <InstanceType<typeof LoginAccount>>
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
