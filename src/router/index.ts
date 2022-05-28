@@ -9,11 +9,21 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('@/view/login/LoginIndex.vue')
+    name: 'login',
+    component: () => import('@/view/login/LoginIndex.vue'),
+    children: []
   },
   {
     path: '/main',
-    component: () => import('@/view/main/MainIndex.vue')
+    name: 'main',
+    component: () => import('@/view/main/Main.vue'),
+    children: []
+  },
+  {
+    path: '/:pathMatch(.*)',
+    name: '404',
+    component: () => import('@/view/error/404.vue'),
+    children: []
   }
 ]
 

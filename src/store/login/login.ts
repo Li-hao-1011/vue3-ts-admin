@@ -11,6 +11,7 @@ import { IRootState } from '../types'
 import router from '@/router'
 
 import localCatch from '@/utils/cache'
+import userMapMenu from '@/utils/mapMenus'
 
 // Module<S, R> S：state的类型
 const loginModule: Module<ILoginState, IRootState> = {
@@ -21,8 +22,6 @@ const loginModule: Module<ILoginState, IRootState> = {
   getters: {},
   actions: {
     async accountLoginAction({ commit }, payload: IAccount) {
-      console.log(payload)
-
       // login
       const loginResult = await accountLoginRequest(payload)
 
@@ -69,8 +68,16 @@ const loginModule: Module<ILoginState, IRootState> = {
     changeUserInfo(state, value: object) {
       state.userInfo = JSON.parse(JSON.stringify(value))
     },
-    changeUserMenus(state, value: object) {
+    changeUserMenus(state, value: any) {
       state.userMenu = JSON.parse(JSON.stringify(value))
+      // console.log(value)
+
+      // 获取到了 userMenus 与之对应的；路由列表
+      const userRouters = userMapMenu(value)
+
+      userRouters.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   }
 }

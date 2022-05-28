@@ -6,6 +6,7 @@
     </div>
     <el-menu
       :collapse="collapse"
+      router
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -14,13 +15,13 @@
       <template v-for="item in userMenus" :key="item.id">
         <!-- type===1 有子菜单 -->
         <template v-if="item.type === 1">
-          <el-sub-menu :index="item.id + ''">
+          <el-sub-menu :index="item.url">
             <template #title>
               <el-icon><Aim /></el-icon>
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subItem in item.children" :key="subItem.id">
-              <el-menu-item :index="subItem.id + ''">
+              <el-menu-item :index="subItem.url" @click="changeRouter(subItem)">
                 <el-icon><Grid /></el-icon>
                 <span>{{ subItem.name }}</span>
               </el-menu-item>
@@ -30,7 +31,7 @@
 
         <!-- type===2 无子菜单，直接展示 -->
         <template v-else-if="item.type === 2">
-          <el-sub-menu :index="item.id + ''">
+          <el-sub-menu :index="item.url">
             <template #title>
               <i v-if="item.icon" :class="item.icon"></i>
               <span>{{ item.name }}</span>
@@ -43,7 +44,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { Aim, Grid } from '@element-plus/icons-vue'
 
 // import { mapState } from 'vuex'
@@ -56,13 +58,29 @@ export default defineComponent({
     collapse: { type: Boolean, default: false }
   },
   setup() {
+    interface ILoginState {
+      name: any
+      parentId: any
+      sort: any
+      type: any
+      url: string
+      id: any
+      children: any[]
+    }
+
     const store = userStore()
+    const route = useRouter()
 
     const userMenus = computed(() => store.state.login.userMenu)
 
-    // computed(...mapState())
+    const changeRouter = (item: ILoginState) => {
+      console.log(item, item.url)
 
-    return { userMenus }
+      // route
+      route.push({ path: item.url ?? '/404' })
+    }
+
+    return { userMenus, changeRouter }
   }
 })
 </script>
