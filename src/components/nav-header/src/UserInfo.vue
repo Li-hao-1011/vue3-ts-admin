@@ -30,10 +30,7 @@ export default defineComponent({
   components: { ArrowDown, UserFilled, CircleClose },
   setup() {
     const store = userStore()
-    const name = 'coderwhy'
-    const userInfo = computed(() => store.state.login.userInfo)
-    // const name = userInfo.value?.name ?? 'coderwhy'
-    console.log(userInfo.value)
+    const name = computed(() => store.state.login.userInfo.name)
 
     return { name }
   }

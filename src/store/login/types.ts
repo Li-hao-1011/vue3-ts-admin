@@ -1,6 +1,6 @@
 export interface ILoginState {
   token: string
-  userInfo: object | IUserInfo
+  userInfo: any
   userMenu: Array<any>
 }
 

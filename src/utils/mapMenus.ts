@@ -1,4 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { IBreadcrumb } from '@/base-ui/Breadcrumb'
+
+let firstMenu: any = null
 
 export default function userMapMenu(userMenus: any[]) {
   // 使用webpack的函数获取到路由路径数组
@@ -30,10 +33,44 @@ function _recurseGetRoute(
       if (route) {
         result.push(route)
       }
+      // 获取到第一个菜单
+      if (!firstMenu) {
+        firstMenu = route
+      }
     } else {
       _recurseGetRoute(item.children, allRouters, result)
     }
   })
 
   return result
+}
+
+// 导出获取到的第一个菜单
+export { firstMenu }
+
+// 根据route路径匹配对应的路由(目标是获取到id)
+export function pathMapToMenu(
+  userMenus: any[],
+  currentPath: string,
+  breadcrumbs?: IBreadcrumb[]
+): any {
+  for (const menu of userMenus) {
+    //
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        breadcrumbs?.push({ name: menu.name })
+        breadcrumbs?.push({ name: findMenu.name })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+}
+
+export function pathMapBreadcrumbs(userMenus: any[], currentPath: string): IBreadcrumb[] {
+  const breadcrumbs: IBreadcrumb[] = []
+  pathMapToMenu(userMenus, currentPath, breadcrumbs)
+  return breadcrumbs
 }

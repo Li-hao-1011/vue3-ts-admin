@@ -43,7 +43,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       router.push('/main')
     },
     phoneLoginAction({ commit }, payload) {
-      console.log('执行 phoneLoginAction', payload, commit)
+      // console.log('执行 phoneLoginAction', payload, commit)
     },
 
     loadLocalLogin({ commit }) {

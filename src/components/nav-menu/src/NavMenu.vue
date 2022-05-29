@@ -5,8 +5,9 @@
       <span v-if="!collapse" class="title">Vue3+Ts</span>
     </div>
     <el-menu
-      :collapse="collapse"
       router
+      :collapse="collapse"
+      :default-active="defaultActiveIndex"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -15,13 +16,13 @@
       <template v-for="item in userMenus" :key="item.id">
         <!-- type===1 有子菜单 -->
         <template v-if="item.type === 1">
-          <el-sub-menu :index="item.url">
+          <el-sub-menu :index="item.id + ''">
             <template #title>
               <el-icon><Aim /></el-icon>
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subItem in item.children" :key="subItem.id">
-              <el-menu-item :index="subItem.url" @click="changeRouter(subItem)">
+              <el-menu-item :index="subItem.id + ''" @click="changeRouter(subItem)">
                 <el-icon><Grid /></el-icon>
                 <span>{{ subItem.name }}</span>
               </el-menu-item>
@@ -44,12 +45,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, computed, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { Aim, Grid } from '@element-plus/icons-vue'
 
 // import { mapState } from 'vuex'
 import { userStore } from '@/store/index'
+import { pathMapToMenu } from '@/utils/mapMenus'
 
 export default defineComponent({
   name: 'NavMenu',
@@ -69,18 +71,22 @@ export default defineComponent({
     }
 
     const store = userStore()
-    const route = useRouter()
+    const router = useRouter()
 
     const userMenus = computed(() => store.state.login.userMenu)
 
-    const changeRouter = (item: ILoginState) => {
-      console.log(item, item.url)
+    const route = useRoute()
+    const currentPath = route.path
+    const activeMenu = pathMapToMenu(userMenus.value, currentPath)
+    const defaultActiveIndex = ref(activeMenu.id + '')
 
+    const changeRouter = (item: ILoginState) => {
       // route
-      route.push({ path: item.url ?? '/404' })
+      router.push({ path: item.url ?? '/404' })
+      defaultActiveIndex.value = item.id ? item.id + '' : '404'
     }
 
-    return { userMenus, changeRouter }
+    return { userMenus, changeRouter, defaultActiveIndex }
   }
 })
 </script>

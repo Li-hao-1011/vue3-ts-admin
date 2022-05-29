@@ -5,12 +5,8 @@
       <Expand v-else />
     </el-icon>
     <div class="content">
-      <div class="bread-crumb">
-        <span>面包屑</span>
-        <span>/</span>
-        <span>123</span>
-      </div>
-      <user-info class="user-info"></user-info>
+      <lh-breadcrumb :breadcrumbs="breadcrumbs" />
+      <user-info />
     </div>
 
     <!-- <el-icon><Expand /></el-icon> -->
@@ -18,13 +14,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import UserInfo from './UserInfo.vue'
+import LhBreadcrumb from '@/base-ui/Breadcrumb'
+import { pathMapBreadcrumbs } from '@/utils/mapMenus'
+import { userStore } from '@/store/index'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'NavHeader',
-  components: { Fold, Expand, UserInfo },
+  components: { Fold, Expand, UserInfo, LhBreadcrumb },
   emits: ['foldchange'],
   setup(props, { emit }) {
     const isFold = ref(true)
@@ -32,7 +32,20 @@ export default defineComponent({
       isFold.value = !isFold.value
       emit('foldchange', isFold.value)
     }
-    return { handleFoldClick, isFold }
+
+    // 面包屑数据
+
+    const store = userStore()
+    const breadcrumbs = computed(() => {
+      const route = useRoute()
+      const userMenus = computed(() => store.state.login.userMenu).value
+      const currentPath = route.path
+      console.log()
+      return pathMapBreadcrumbs(userMenus, currentPath)
+    })
+    console.log(breadcrumbs)
+
+    return { handleFoldClick, isFold, breadcrumbs }
   }
 })
 </script>
@@ -50,11 +63,6 @@ export default defineComponent({
     justify-content: space-between;
     flex-wrap: nowrap;
     align-items: center;
-    .bread-crumb {
-      // height: 100%;
-    }
-    .user-info {
-    }
   }
 
   .fold-icon {

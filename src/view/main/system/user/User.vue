@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div class="search">
-      <lh-form v-bind="formConfig" />
+      <lh-form v-bind="formConfig" v-model="formData" />
 
       <!--   <el-form label-width="100px">
         <el-row>
@@ -41,7 +41,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import LhForm from '@/base-ui/LhFrom'
 import { formConfig } from './config/search.config'
@@ -50,7 +50,13 @@ export default defineComponent({
   name: 'SystemUsre',
   components: { LhForm },
   setup() {
-    return { formConfig }
+    const formData = ref({
+      name: '',
+      password: '',
+      sport: '',
+      createDate: ''
+    })
+    return { formConfig, formData }
   }
 })
 </script>

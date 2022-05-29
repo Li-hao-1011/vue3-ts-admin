@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import localCatch from '@/utils/cache'
+import { firstMenu } from '@/utils/mapMenus'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -16,6 +17,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/main',
     name: 'main',
+    // redirect: '/main/',
     component: () => import('@/view/main/Main.vue')
     // children: []
   },
@@ -37,6 +39,12 @@ router.beforeEach((to) => {
     const token = localCatch.getCache('token', 'localStorage')
     if (!token) {
       return '/login'
+    }
+
+    // console.log(router.getRoutes())
+    // console.log(to)
+    if (to.path === '/main') {
+      return firstMenu
     }
   }
 })

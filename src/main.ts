@@ -10,8 +10,10 @@ import { globalRegister } from './global/index'
 import { setupStore } from './store/index'
 
 const app = createApp(App)
-app.use(router)
 app.use(store)
+//
+setupStore()
+app.use(router)
 
 // 内部会调用 globalRegister 并传入app, 源码如下
 /*
@@ -24,7 +26,5 @@ app.use(store)
 */
 app.use(globalRegister)
 // registerApp(app)
-
-setupStore()
 
 app.mount('#app')

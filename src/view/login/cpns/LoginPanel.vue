@@ -62,7 +62,7 @@ export default defineComponent({
         accountRef.value?.loginAction(isKeepPassword.value)
       } else if (currentTab.value === 'phone') {
         // 手机登录
-        console.log('手机登录')
+        // console.log('手机登录')
       }
     }
 

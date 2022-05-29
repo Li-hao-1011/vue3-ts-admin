@@ -2,9 +2,22 @@ import { IForm } from '@/base-ui/LhFrom/types'
 
 export const formConfig: IForm = {
   formItems: [
-    { type: 'input', label: '用户名', rules: [], placeholder: '请输入用户名' },
-    { type: 'password', label: '密码', rules: [], placeholder: '请输入密码' },
     {
+      filed: 'name',
+      type: 'input',
+      label: '用户名',
+      rules: [],
+      placeholder: '请输入用户名'
+    },
+    {
+      filed: 'password',
+      type: 'password',
+      label: '密码',
+      rules: [],
+      placeholder: '请输入密码'
+    },
+    {
+      filed: 'sport',
       type: 'select',
       label: '喜欢的运动',
       rules: [],
@@ -15,6 +28,7 @@ export const formConfig: IForm = {
       ]
     },
     {
+      filed: 'createDate',
       type: 'datepicker',
       label: '时间范围',
       rules: [],
