@@ -12,9 +12,8 @@
       <el-dropdown-menu>
         <el-dropdown-item>
           <el-icon><CircleClose /></el-icon>
-
-          退出登录</el-dropdown-item
-        >
+          退出登录
+        </el-dropdown-item>
         <el-dropdown-item>Action 2</el-dropdown-item>
         <el-dropdown-item>Action 3</el-dropdown-item>
       </el-dropdown-menu>
@@ -32,7 +31,9 @@ export default defineComponent({
   setup() {
     const store = userStore()
     const name = 'coderwhy'
-    // computed(() => store?.state?.login?.userInfo?.name ?? '')
+    const userInfo = computed(() => store.state.login.userInfo)
+    // const name = userInfo.value?.name ?? 'coderwhy'
+    console.log(userInfo.value)
 
     return { name }
   }

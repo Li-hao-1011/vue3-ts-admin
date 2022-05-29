@@ -1,6 +1,7 @@
 import server from '../index'
 
 import { IAccount, IDataType, ILoginResult } from './types'
+import { IUserInfo } from '@/store/login/types'
 
 enum LoginURL {
   AccountLogin = '/login',
@@ -17,7 +18,7 @@ export function accountLoginRequest(account: IAccount) {
 }
 
 export function requestUserInfoById(id: number) {
-  return server.get<IDataType>({
+  return server.get<IDataType<IUserInfo>>({
     url: LoginURL.LoginUserInfo + id
   })
 }
