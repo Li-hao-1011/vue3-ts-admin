@@ -1,6 +1,7 @@
 import server from '../index'
 
-import { IAccount, IDataType, ILoginResult } from './types'
+import { IDataType } from '@/service/types'
+import { IAccount, ILoginResult } from './types'
 import { IUserInfo } from '@/store/login/types'
 
 enum LoginURL {

@@ -63,8 +63,8 @@ export default defineComponent({
 .el-footer {
   display: flex;
   color: #333;
-  text-align: center;
-  align-items: center;
+  // text-align: center;
+  // align-items: center;
 }
 
 .el-header {

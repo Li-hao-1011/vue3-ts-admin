@@ -34,16 +34,14 @@ export default defineComponent({
     }
 
     // 面包屑数据
-
     const store = userStore()
     const breadcrumbs = computed(() => {
       const route = useRoute()
       const userMenus = computed(() => store.state.login.userMenu).value
       const currentPath = route.path
-      console.log()
       return pathMapBreadcrumbs(userMenus, currentPath)
     })
-    console.log(breadcrumbs)
+    // console.log(breadcrumbs)
 
     return { handleFoldClick, isFold, breadcrumbs }
   }
