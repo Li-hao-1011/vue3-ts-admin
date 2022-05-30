@@ -46,3 +46,10 @@ export const formConfig: IForm = {
     padding: '10px 40px'
   } */
 }
+
+export interface IPropList {
+  prop?: string
+  label?: string
+  minWiath?: string
+  slotName?: string
+}

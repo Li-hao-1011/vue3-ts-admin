@@ -27,11 +27,4 @@ app.use(router)
 app.use(globalRegister)
 // registerApp(app)
 
-// app.config.globalProperties.$filters = {
-//   formatTime(value: string) {
-//     //
-//     return '2022-05-21'
-//   }
-// }
-
 app.mount('#app')

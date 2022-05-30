@@ -28,16 +28,55 @@
       </lh-form> -->
     </div>
     <div class="content">
-      <LhTable :list-data="userList" :prop-list="propList">
+      <LhTable
+        :list-data="userList"
+        :prop-list="propList"
+        title="用户列表"
+        :show-index-column="showIndexColumn"
+        :show-select-column="showSelectColumn"
+        @selectionChange="handleSelectionChange"
+      >
         <!-- 作用域插槽 -->
         <template #enable="scope">
-          <el-button type="danger">{{ scope.row.enable ? '启用' : '禁用' }}</el-button>
+          <el-button :type="scope.row.enable ? 'success' : 'danger'" size="small">
+            {{ scope.row.enable ? '启用' : '禁用' }}
+          </el-button>
         </template>
         <template #createAt="scope">
-          <strong>{{ $filters.formatTime(scope.row.createAt) }}</strong>
+          {{ $filters.formatTime(scope.row.createAt) }}
         </template>
         <template #updateAt="scope">
-          <strong>{{ $filters.formatTime(scope.row.updateAt) }}</strong>
+          {{ $filters.formatTime(scope.row.updateAt) }}
+        </template>
+        <template #handle>
+          <div class="handle-btns">
+            <!--  <el-button size="small" type="plain" link>编辑</el-button>
+            <el-button size="small" type="danger" link>删除</el-button> -->
+            <el-button size="small" text>编辑</el-button>
+            <el-button size="small" text type="danger">删除</el-button>
+          </div>
+        </template>
+
+        <template #headerHandler>
+          <el-button type="primary"> 新建用户 </el-button>
+        </template>
+        <template #footer>
+          <el-pagination
+            :page-sizes="[100, 200, 300, 400]"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400"
+          />
+          <!--
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :disabled="disabled"
+            :background="background"
+            v-model:currentPage="currentPage4"
+            v-model:page-size="pageSize4"
+            :small="small"
+
+
+           -->
         </template>
       </LhTable>
     </div>
@@ -50,6 +89,7 @@ import { useStore } from 'vuex'
 import UserSearch from '@/components/page-search'
 import LhTable from '@/base-ui/table'
 import { formConfig } from './config/search.config'
+import { IPropList } from './config/search.config'
 
 export default defineComponent({
   name: 'SystemUsre',
@@ -74,24 +114,45 @@ export default defineComponent({
     const userList = computed(() => store.state.system.userList)
     const userCount = computed(() => store.state.system.userCount)
 
-    const propList = [
+    const propList: IPropList[] = [
       { prop: 'name', label: '用户名', minWiath: '100', slotName: 'name' },
       { prop: 'realname', label: '真实姓名', minWiath: '100', slotName: 'realname' },
       { prop: 'enable', label: '状态', minWiath: '100', slotName: 'enable' },
       { prop: 'cellphone', label: '手机号码', minWiath: '200', slotName: 'cellphone' },
       { prop: 'createAt', label: '创建时间', minWiath: '200', slotName: 'createAt' },
-      { prop: 'updateAt', label: '更新时间', minWiath: '200', slotName: 'updateAt' }
+      { prop: 'updateAt', label: '更新时间', minWiath: '200', slotName: 'updateAt' },
+      { label: '操作', minWiath: '120', slotName: 'handle' }
     ]
 
-    return { formConfig, formData, userList, userCount, propList }
+    const showIndexColumn = true
+    const showSelectColumn = true
+    const handleSelectionChange = () => {
+      //
+    }
+
+    return {
+      formConfig,
+      formData,
+      userList,
+      userCount,
+      propList,
+      showIndexColumn,
+      showSelectColumn,
+      handleSelectionChange
+    }
   }
 })
 </script>
 <style scoped lang="less">
 .user {
+  border-top: 20px solid #eee;
   .content {
     padding: 10px 20px;
-    border-top: 20px solid #eee;
+  }
+  .handle-btns {
+    width: 100%;
+    // display: flex;
+    // justify-content: space-between;
   }
 }
 </style>
