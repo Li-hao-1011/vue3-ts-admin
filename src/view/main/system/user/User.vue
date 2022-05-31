@@ -1,158 +1,103 @@
 <template>
   <div class="user">
     <div class="search">
-      <user-search :search-config="formConfig"></user-search>
-
-      <!--
-        <lh-form v-bind="formConfig" v-model="formData">
-              <template v-slot:header>
-          <h1>高级检索</h1>
-        </template>
-
-        <template v-slot:footer>
-          <div class="user-footer">
-            <el-button>
-              <template #icon>
-                <el-icon><RefreshLeft /></el-icon>
-              </template>
-              重置
-            </el-button>
-            <el-button type="primary">
-              <template #icon>
-                <el-icon><Search /></el-icon>
-              </template>
-              搜索
-            </el-button>
-          </div>
-        </template>
-      </lh-form> -->
+      <user-search
+        :search-config="searchFormConfig"
+        :searchBtnClick="handleQueryClick"
+        :resetBtnClick="handleResetClick"
+      ></user-search>
     </div>
     <div class="content">
-      <LhTable
-        :list-data="userList"
-        :prop-list="propList"
-        title="用户列表"
-        :show-index-column="showIndexColumn"
-        :show-select-column="showSelectColumn"
-        @selectionChange="handleSelectionChange"
+      <user-content
+        :content-table-config="contentTableConfig"
+        ref="pageContentRef"
+        pageName="users"
       >
-        <!-- 作用域插槽 -->
-        <template #enable="scope">
-          <el-button :type="scope.row.enable ? 'success' : 'danger'" size="small">
-            {{ scope.row.enable ? '启用' : '禁用' }}
-          </el-button>
-        </template>
-        <template #createAt="scope">
-          {{ $filters.formatTime(scope.row.createAt) }}
-        </template>
-        <template #updateAt="scope">
-          {{ $filters.formatTime(scope.row.updateAt) }}
-        </template>
-        <template #handle>
-          <div class="handle-btns">
-            <!--  <el-button size="small" type="plain" link>编辑</el-button>
-            <el-button size="small" type="danger" link>删除</el-button> -->
-            <el-button size="small" text>编辑</el-button>
-            <el-button size="small" text type="danger">删除</el-button>
-          </div>
-        </template>
-
-        <template #headerHandler>
-          <el-button type="primary"> 新建用户 </el-button>
-        </template>
-        <template #footer>
-          <el-pagination
-            :page-sizes="[100, 200, 300, 400]"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
-          />
-          <!--
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :disabled="disabled"
-            :background="background"
-            v-model:currentPage="currentPage4"
-            v-model:page-size="pageSize4"
-            :small="small"
-
-
-           -->
-        </template>
-      </LhTable>
+      </user-content>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 
 import UserSearch from '@/components/page-search'
-import LhTable from '@/base-ui/table'
-import { formConfig } from './config/search.config'
-import { IPropList } from './config/search.config'
+import UserContent from '@/components/page-content'
+import { searchFormConfig } from './config/search.config'
+import { contentTableConfig } from './config/content.config'
+
+import { IFormItem } from '@/base-ui/LhFrom'
+import { modalConfig } from './config/modal.config'
+
+import { usePageSearch } from '@/hooks/usePageSearch'
+import { usePageModal } from '@/hooks/usePageModal'
 
 export default defineComponent({
   name: 'SystemUsre',
-  components: { UserSearch, LhTable },
+  components: { UserSearch, UserContent },
   setup() {
-    const formData = ref({
+    /*     const formData = ref({
       name: '',
       password: '',
       sport: '',
       createDate: ''
-    })
+    }) */
 
+    const [pageContentRef, handleQueryClick, handleResetClick] = usePageSearch()
     const store = useStore()
-    store.dispatch('system/getPageListAction', {
-      pageUrl: '/users/list',
-      queryInfo: {
-        offset: 0,
-        size: 100
-      }
+    const modalConfigRef = computed(() => {
+      const roleOption: IFormItem | undefined = modalConfig.formItems?.find(
+        (item) => item.field === 'roleId'
+      )
+      roleOption!.options = store.state.entireRoles.map((item: any) => {
+        return { label: item.name, value: item.id }
+      })
+      const departmentOption: IFormItem | undefined = modalConfig.formItems?.find(
+        (item) => item.field === 'departmentId'
+      )
+      departmentOption!.options = store.state.entireDepartments.map((item: any) => {
+        return { label: item.name, value: item.id }
+      })
+      return modalConfig
     })
 
-    const userList = computed(() => store.state.system.userList)
-    const userCount = computed(() => store.state.system.userCount)
-
-    const propList: IPropList[] = [
-      { prop: 'name', label: '用户名', minWiath: '100', slotName: 'name' },
-      { prop: 'realname', label: '真实姓名', minWiath: '100', slotName: 'realname' },
-      { prop: 'enable', label: '状态', minWiath: '100', slotName: 'enable' },
-      { prop: 'cellphone', label: '手机号码', minWiath: '200', slotName: 'cellphone' },
-      { prop: 'createAt', label: '创建时间', minWiath: '200', slotName: 'createAt' },
-      { prop: 'updateAt', label: '更新时间', minWiath: '200', slotName: 'updateAt' },
-      { label: '操作', minWiath: '120', slotName: 'handle' }
-    ]
-
-    const showIndexColumn = true
-    const showSelectColumn = true
-    const handleSelectionChange = () => {
-      //
+    // modal handle
+    const newHandleCallback = () => {
+      const passwordItem = modalConfigRef.value.formItems?.find((item) => item.field === 'password')
+      passwordItem!.isHidden = false
+    }
+    const editHandleCallback = () => {
+      const passwordItem = modalConfigRef.value.formItems?.find((item) => item.field === 'password')
+      passwordItem!.isHidden = true
     }
 
+    // 处理的hook
+    const [modalInfo, pageModalRef, handleNewData, handleEditData] = usePageModal(
+      newHandleCallback,
+      editHandleCallback
+    )
+
     return {
-      formConfig,
-      formData,
-      userList,
-      userCount,
-      propList,
-      showIndexColumn,
-      showSelectColumn,
-      handleSelectionChange
+      contentTableConfig,
+      searchFormConfig,
+      // formData,
+      // propList,
+      // showIndexColumn,
+      // showSelectColumn,
+      // handleSelectionChange,
+      // title,
+      pageContentRef,
+      handleQueryClick,
+      handleResetClick
     }
   }
 })
 </script>
 <style scoped lang="less">
 .user {
-  border-top: 20px solid #eee;
   .content {
     padding: 10px 20px;
-  }
-  .handle-btns {
-    width: 100%;
-    // display: flex;
-    // justify-content: space-between;
+    border-top: 20px solid #eee;
   }
 }
 </style>

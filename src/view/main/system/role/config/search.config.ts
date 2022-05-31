@@ -5,34 +5,16 @@ export const searchFormConfig: IForm = {
     {
       field: 'name',
       type: 'input',
-      label: '用户名',
-      placeHolder: '请输入用户名',
+      label: '角色名称',
+      placeHolder: '请输入角色名称',
       rules: []
     },
     {
-      field: 'realname',
+      field: 'intro',
       type: 'input',
-      label: '真实姓名',
-      placeHolder: '请输入真实姓名',
+      label: '权限介绍',
+      placeHolder: '请输入权限介绍',
       rules: []
-    },
-    {
-      field: 'cellphone',
-      type: 'input',
-      label: '手机号码',
-      placeHolder: '请输入手机号码',
-      rules: []
-    },
-    {
-      field: 'enable',
-      type: 'select',
-      label: '状态',
-      placeHolder: '请选择状态',
-      rules: [],
-      options: [
-        { label: '启用', value: 1 },
-        { label: '禁用', value: 0 }
-      ]
     },
     {
       field: 'createAt',

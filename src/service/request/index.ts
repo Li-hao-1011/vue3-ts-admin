@@ -113,7 +113,7 @@ class LhRequest {
     return this.request<T>({ ...config, method: 'GET' })
   }
 
-  post<T>(config: LHRequestConfig<T>): Promise<T> {
+  post<T = any>(config: LHRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
 

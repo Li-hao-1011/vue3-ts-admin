@@ -5,30 +5,43 @@
     </div>
     <el-form :label-width="labelWidth">
       <el-row>
-        <template v-for="item in formItems" :key="item.label">
+        <template v-for="(item, index) in formItems" :key="index">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :style="itemStyle">
+            <el-form-item
+              :label="item.label"
+              :rules="item.rules"
+              class="form-item"
+              :style="itemStyle"
+              v-if="!item.isHidden"
+            >
               <template v-if="item.type === 'input' || item.type === 'password'">
                 <el-input
-                  v-model="formData[`${item.filed}`]"
-                  :placeholder="item.placeholder"
+                  v-model="formData[`${item.field}`]"
+                  :placeholder="item.placeHolder"
                   :show-password="item.type === 'password'"
-                ></el-input>
+                />
               </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
-                  v-model="formData[`${item.filed}`]"
-                  :placeholder="item.placeholder"
-                  size="large"
+                  v-model="formData[`${item.field}`]"
+                  :placeholder="item.placeHolder"
                   style="width: 100%"
                 >
-                  <template v-for="option in item.options" :key="option.value">
-                    <el-option :label="option.title" :value="option.value" />
-                  </template>
+                  <el-option
+                    v-for="option in item.options"
+                    :key="option.value"
+                    :value="option.value"
+                    >{{ option.label }}</el-option
+                  >
                 </el-select>
               </template>
               <template v-else-if="item.type === 'datepicker'">
-                <el-date-picker v-model="formData[`${item.filed}`]" v-bind="item.otherOptions" />
+                <el-date-picker
+                  v-model="formData[`${item.field}`]"
+                  v-bind="item.otherOption"
+                  style="width: 100%"
+                >
+                </el-date-picker>
               </template>
             </el-form-item>
           </el-col>
@@ -61,9 +74,7 @@ export default defineComponent({
     },
     itemStyle: {
       type: Object,
-      default: () => ({
-        padding: '0'
-      })
+      default: () => ({ padding: '10px 40px' })
     },
     colLayout: {
       type: Object,
@@ -88,8 +99,16 @@ export default defineComponent({
         deep: true
       }
     )
+    console.log(props.modelValue)
+
+    /*    const handleUpdataValue = (value: any, key: string) => {
+      console.log(value, key)
+
+      emit('update:modelValue', { ...props.modelValue, [key]: value })
+    } */
     return {
       formData
+      // handleUpdataValue
     }
   }
 })

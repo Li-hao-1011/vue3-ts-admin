@@ -1,19 +1,15 @@
 <template>
   <div>
     <lh-form v-bind="searchConfig" v-model="formData">
-      <template v-slot:header>
-        <h1>高级检索</h1>
-      </template>
-
       <template v-slot:footer>
         <div class="page-search-footer">
-          <el-button>
+          <el-button @click="handleResetClick">
             <template #icon>
               <el-icon><RefreshLeft /></el-icon>
             </template>
             重置
           </el-button>
-          <el-button type="primary">
+          <el-button type="primary" @click="handleSearchClick">
             <template #icon>
               <el-icon><Search /></el-icon>
             </template>
@@ -30,6 +26,10 @@ import { Search, RefreshLeft } from '@element-plus/icons-vue'
 
 import LhForm from '@/base-ui/LhFrom'
 
+interface IFormData {
+  [key: string]: any
+}
+
 export default defineComponent({
   name: 'PageSearch',
   components: { LhForm, Search, RefreshLeft },
@@ -37,16 +37,39 @@ export default defineComponent({
     searchConfig: {
       type: Object,
       required: true
+    },
+    title: {
+      type: String,
+      default: '高级检索'
     }
   },
-  setup() {
-    const formData = ref({
-      name: '',
-      password: '',
-      sport: '',
-      createDate: ''
-    })
-    return { formData }
+  emits: ['searchBtnClick', 'resetBtnClick'],
+  setup(props, { emit }) {
+    // array
+    const originFormData: IFormData = {}
+
+    const formItems = props.searchConfig?.formItems ?? []
+    for (const item of formItems) {
+      originFormData[item.filed] = ''
+    }
+
+    const formData = ref<IFormData>({ ...originFormData })
+
+    // 重置
+    const handleResetClick = () => {
+      for (const key in originFormData) {
+        formData.value[`${key}`] = originFormData[key]
+      }
+      emit('resetBtnClick')
+      // formData.value = formOriginData
+    }
+    // 查找
+    const handleSearchClick = () => {
+      console.log({ ...formData.value })
+      emit('searchBtnClick', formData.value)
+    }
+
+    return { formData, handleResetClick, handleSearchClick }
   }
 })
 </script>
