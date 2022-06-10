@@ -32,6 +32,7 @@ const systemModule: Module<ISystemState, IRootState> = {
   },
   actions: {
     async getPageListDataAction({ commit }, payload: IPagePayload) {
+      // 获取pageUrl
       const pageName = payload.pageName
       const pageUrl = `/${pageName}/list`
       if (pageUrl.length === 0) {
@@ -41,12 +42,12 @@ const systemModule: Module<ISystemState, IRootState> = {
 
       switch (pageName) {
         case 'users':
-          commit('setUsersCountMutations', totalCount)
           commit('setUsersListMutations', list)
+          commit('setUsersCountMutations', totalCount)
           break
         case 'role':
-          commit('setRoleCountMutations', totalCount)
           commit('setRoleListMutations', list)
+          commit('setRoleCountMutations', totalCount)
           break
       }
     },
@@ -68,6 +69,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       // 发起请求
       const pageResult = await getPageListData(`/${pageName}/list`, payload.queryInfo)
       const { list, totalCount } = pageResult.data
+      // 存储数据
       commit(`set${changePageName}ListMutations`, list)
       commit(`set${changePageName}CountMutations`, totalCount)
 

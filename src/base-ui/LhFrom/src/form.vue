@@ -16,16 +16,21 @@
             >
               <template v-if="item.type === 'input' || item.type === 'password'">
                 <el-input
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
                   :placeholder="item.placeHolder"
                   :show-password="item.type === 'password'"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                  v-bind="item.otherOption"
+                  style="width: 100%"
                 />
               </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
                   :placeholder="item.placeHolder"
                   style="width: 100%"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                  v-bind="item.otherOption"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -37,9 +42,10 @@
               </template>
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
                   v-bind="item.otherOption"
                   style="width: 100%"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 >
                 </el-date-picker>
               </template>
@@ -99,16 +105,21 @@ export default defineComponent({
         deep: true
       }
     )
-    console.log(props.modelValue)
+    const handleValueChange = (value: any, field: string) => {
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
+
+    // console.log(123, props.modelValue)
 
     /*    const handleUpdataValue = (value: any, key: string) => {
+
       console.log(value, key)
 
       emit('update:modelValue', { ...props.modelValue, [key]: value })
     } */
     return {
-      formData
-      // handleUpdataValue
+      formData,
+      handleValueChange
     }
   }
 })

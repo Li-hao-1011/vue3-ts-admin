@@ -15,9 +15,10 @@
         @selection-change="handleSelectionChange"
         style="width: 100%"
       >
-        <el-table-column v-if="showIndexColumn" type="index" align="center"> </el-table-column>
-
         <el-table-column v-if="showSelectColumn" type="selection" align="center"> </el-table-column>
+
+        <el-table-column v-if="showIndexColumn" type="index" align="center" label="序号" width="70">
+        </el-table-column>
         <template v-for="propItem in propList" :key="propItem.prop">
           <el-table-column
             :prop="propItem.prop"

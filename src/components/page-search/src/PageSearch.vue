@@ -57,12 +57,15 @@ export default defineComponent({
 
     // 重置
     const handleResetClick = () => {
-      for (const key in originFormData) {
+      console.log('重置')
+
+      /*   for (const key in originFormData) {
         formData.value[`${key}`] = originFormData[key]
-      }
-      emit('resetBtnClick')
-      // formData.value = formOriginData
+      } */
+      // emit('resetBtnClick')
+      formData.value = originFormData
     }
+
     // 查找
     const handleSearchClick = () => {
       console.log({ ...formData.value })

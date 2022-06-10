@@ -28,6 +28,12 @@ export const modalConfig: IForm = {
       options: []
     }
   ],
-  colLayout: { span: 24 },
+  colLayout: {
+    xl: 6,
+    lg: 8,
+    md: 12,
+    sm: 24,
+    xs: 24
+  },
   itemStyle: { padding: 0 }
 }

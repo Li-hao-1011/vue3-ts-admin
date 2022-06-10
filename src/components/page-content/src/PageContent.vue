@@ -12,16 +12,17 @@
       @selectionChange="contentTableConfig.handleSelectionChange"
 
      -->
+      <!-- <LhTable :list-data="list" v-bind="contentTableConfig"> -->
       <!-- 作用域插槽 -->
       <template #enable="scope">
         <el-button :type="scope.row.enable ? 'success' : 'danger'" size="small">
           {{ scope.row.enable ? '启用' : '禁用' }}
         </el-button>
       </template>
-      <!-- <template #createAt="scope">
+      <!--       <template #createAt="scope">
         {{ $filters.formatTime(scope.row.createAt) }}
-      </template> -->
-      <!-- <template #updateAt="scope">
+      </template>
+      <template #updateAt="scope">
         {{ $filters.formatTime(scope.row.updateAt) }}
       </template> -->
       <template #handle>
