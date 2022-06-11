@@ -11,13 +11,14 @@ import { IRootState } from '../types'
 import router from '@/router'
 
 import localCatch from '@/utils/cache'
-import userMapMenu from '@/utils/mapMenus'
+
+import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/mapMenus'
 
 // Module<S, R> S：state的类型
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
-    return { token: '', userInfo: {}, userMenu: [] }
+    return { token: '', userInfo: {}, userMenu: [], permissions: [] }
   },
   getters: {},
   actions: {
@@ -70,14 +71,17 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, value: any) {
       state.userMenu = JSON.parse(JSON.stringify(value))
-      // console.log(value)
 
       // 获取到了 userMenus 与之对应的；路由列表
-      const userRouters = userMapMenu(value)
+      const userRouters = mapMenusToRoutes(value)
 
       userRouters.forEach((route) => {
         router.addRoute('main', route)
       })
+
+      // 获取用户按钮的权限
+      const permissions = mapMenusToPermissions(value)
+      state.permissions = permissions
     }
   }
 }

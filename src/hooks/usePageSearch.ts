@@ -5,11 +5,11 @@ export const usePageSearch = () => {
   const pageContentRef = ref<InstanceType<typeof PageConetnt>>()
 
   const handleQueryClick = (queryInfo: any) => {
-    console.log(pageContentRef.value)
     pageContentRef.value?.getPageData(queryInfo)
+    console.log('搜索-1')
   }
   const handleResetClick = () => {
     pageContentRef.value?.getPageData()
   }
-  return [pageContentRef, handleQueryClick, handleResetClick]
+  return [pageContentRef, handleResetClick, handleQueryClick]
 }

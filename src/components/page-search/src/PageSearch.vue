@@ -46,29 +46,27 @@ export default defineComponent({
   emits: ['searchBtnClick', 'resetBtnClick'],
   setup(props, { emit }) {
     // array
-    const originFormData: IFormData = {}
+    const originFormData: any = {}
 
     const formItems = props.searchConfig?.formItems ?? []
     for (const item of formItems) {
       originFormData[item.filed] = ''
     }
 
-    const formData = ref<IFormData>({ ...originFormData })
+    // const formData = ref<IFormData>({ ...originFormData })
+    const formData = ref(originFormData)
 
     // 重置
     const handleResetClick = () => {
-      console.log('重置')
-
+      formData.value = originFormData
+      emit('resetBtnClick')
       /*   for (const key in originFormData) {
         formData.value[`${key}`] = originFormData[key]
       } */
-      // emit('resetBtnClick')
-      formData.value = originFormData
     }
 
-    // 查找
+    // 搜索
     const handleSearchClick = () => {
-      console.log({ ...formData.value })
       emit('searchBtnClick', formData.value)
     }
 

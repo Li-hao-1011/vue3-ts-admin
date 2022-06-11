@@ -11,8 +11,9 @@
     <div class="content">
       <el-table
         :data="listData"
-        :border="showTableBorder"
         @selection-change="handleSelectionChange"
+        v-bind="childrenProps"
+        border
         style="width: 100%"
       >
         <el-table-column v-if="showSelectColumn" type="selection" align="center"> </el-table-column>
@@ -20,17 +21,12 @@
         <el-table-column v-if="showIndexColumn" type="index" align="center" label="序号" width="70">
         </el-table-column>
         <template v-for="propItem in propList" :key="propItem.prop">
-          <el-table-column
-            :prop="propItem.prop"
-            :label="propItem.label"
-            :min-width="propItem.minWiath"
-            align="center"
-          >
+          <el-table-column v-bind="propItem" show-overflow-tooltip align="center">
             <!-- 作用域插槽 -->
             <template v-slot="scope">
               <slot :name="propItem.slotName" :row="scope.row">
                 <!-- 默认值 -->
-                {{ propItem.prop !== undefined ? scope.row[propItem.prop] : '' }}
+                {{ scope.row[propItem.prop] }}
               </slot>
             </template>
           </el-table-column>
@@ -38,8 +34,19 @@
       </el-table>
     </div>
 
-    <div class="footer">
-      <slot name="footer">123465</slot>
+    <div class="footer" v-if="showFooter">
+      <slot name="footer">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="listCount"
+        >
+        </el-pagination>
+      </slot>
     </div>
   </div>
 </template>
@@ -57,30 +64,49 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    listCount: {
+      type: Number,
+      default: 0
+    },
     propList: {
-      type: Array as PropType<IPropList[]>,
+      type: Array as any,
       required: true
     },
     showIndexColumn: {
       type: Boolean,
       default: true
     },
-    showTableBorder: {
-      type: Boolean,
-      default: true
-    },
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:page'],
   setup(props, { emit }) {
     const handleSelectionChange = (value: any) => {
-      //
       emit('selectionChange', value)
     }
-    return { handleSelectionChange }
+
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
+    }
+
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
+    }
+    return { handleSelectionChange, handleSizeChange, handleCurrentChange }
   }
 })
 </script>

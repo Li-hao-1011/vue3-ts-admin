@@ -12,7 +12,12 @@ const systemModule: Module<ISystemState, IRootState> = {
       usersList: [],
       usersCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+
+      goodsList: [],
+      goodsCount: 0,
+      menuList: [],
+      menuCount: 0
     }
   },
   mutations: {
@@ -28,17 +33,39 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     setRoleCountMutations(state, payload: number) {
       state.roleCount = payload
+    },
+
+    changeGoodsList(state, list: any[]) {
+      state.goodsList = list
+    },
+    changeGoodsCount(state, count: number) {
+      state.goodsCount = count
+    },
+    changeMenuList(state, list: any[]) {
+      state.menuList = list
+    },
+    changeMenuCount(state, count: number) {
+      state.menuCount = count
     }
   },
   actions: {
-    async getPageListDataAction({ commit }, payload: IPagePayload) {
+    async getPageListDataAction({ commit }, payload: any) {
+      console.log('搜索-3', payload)
+
       // 获取pageUrl
       const pageName = payload.pageName
       const pageUrl = `/${pageName}/list`
-      if (pageUrl.length === 0) {
+
+      /*   if (pageUrl.length === 0) {
         return
-      }
-      const { totalCount, list } = await getPageList(pageUrl, payload.queryInfo)
+      } */
+      const pageResult = await getPageList(pageUrl, payload.queryInfo)
+
+      const { list, totalCount } = pageResult.data
+
+      // const changePageName = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+      // commit(`change${changePageName}List`, list)
+      // commit(`change${changePageName}Count`, totalCount)
 
       switch (pageName) {
         case 'users':
@@ -89,24 +116,11 @@ const systemModule: Module<ISystemState, IRootState> = {
     pageListData(state) {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`]
-        /*         switch (pageName) {
-          case 'users':
-            return state.userList
-          case 'role':
-            return state.roleList
-        } */
       }
     },
     pageCountData(state) {
       return (pageName: string) => {
         return (state as any)[`${pageName}Count`]
-
-        /*       switch (pageName) {
-          case 'users':
-            return state.userCount
-          case 'role':
-            return state.roleCount
-        } */
       }
     }
   }
