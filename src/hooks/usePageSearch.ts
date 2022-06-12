@@ -6,7 +6,6 @@ export const usePageSearch = () => {
 
   const handleQueryClick = (queryInfo: any) => {
     pageContentRef.value?.getPageData(queryInfo)
-    console.log('搜索-1')
   }
   const handleResetClick = () => {
     pageContentRef.value?.getPageData()

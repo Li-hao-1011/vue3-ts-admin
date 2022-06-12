@@ -120,6 +120,10 @@ class LhRequest {
   patch<T>(config: LHRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
+
+  delete<T = any>(config: LHRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE' })
+  }
 }
 
 export default LhRequest

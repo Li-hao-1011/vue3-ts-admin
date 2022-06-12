@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-seach">
     <lh-form v-bind="searchConfig" v-model="formData">
       <template v-slot:footer>
         <div class="page-search-footer">
@@ -53,7 +53,6 @@ export default defineComponent({
       originFormData[item.filed] = ''
     }
 
-    // const formData = ref<IFormData>({ ...originFormData })
     const formData = ref(originFormData)
 
     // 重置
@@ -75,6 +74,9 @@ export default defineComponent({
 })
 </script>
 <style scoped lang="less">
+.page-seach {
+  padding: 22px 10px 0;
+}
 .page-search-footer {
   text-align: right;
   padding: 0 0 10px 0;

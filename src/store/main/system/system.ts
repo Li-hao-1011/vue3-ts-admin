@@ -3,7 +3,7 @@ import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { ISystemState, IPagePayload } from './types'
 import { getPageListData } from '@/service/mian/user'
-import { getPageList } from '@/service/mian/system/system'
+import { getPageList, deletePageDataById } from '@/service/mian/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -50,8 +50,6 @@ const systemModule: Module<ISystemState, IRootState> = {
   },
   actions: {
     async getPageListDataAction({ commit }, payload: any) {
-      console.log('搜索-3', payload)
-
       // 获取pageUrl
       const pageName = payload.pageName
       const pageUrl = `/${pageName}/list`
@@ -76,20 +74,19 @@ const systemModule: Module<ISystemState, IRootState> = {
           commit('setRoleListMutations', list)
           commit('setRoleCountMutations', totalCount)
           break
+
+        case 'goods':
+          commit('changeGoodsList', list)
+          commit('changeGoodsCount', totalCount)
+          break
+        case 'menu':
+          commit('changeMenuList', list)
+          commit('changeMenuCount', totalCount)
+          break
       }
     },
-    async getPageListAction({ commit }, payload: any) {
+    /*     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
-      // 获取 url
-      /*       let pageUrl = ''
-      switch (pageName) {
-        case 'users':
-          pageUrl = '/users/list'
-          break
-        case 'role':
-          pageUrl = '/role/list'
-          break
-      } */
 
       const changePageName = pageName.slice(0, 1).toLocaleUpperCase() + pageName.slice(1)
 
@@ -99,17 +96,23 @@ const systemModule: Module<ISystemState, IRootState> = {
       // 存储数据
       commit(`set${changePageName}ListMutations`, list)
       commit(`set${changePageName}CountMutations`, totalCount)
+    }, */
 
-      /*       switch (pageName) {
-        case 'users':
-          commit('setUsersListMutations', list)
-          commit('setUsersCountMutations', totalCount)
-          break
-        case 'role':
-          commit('setRoleListMutations', list)
-          commit('setRoleCountMutations', totalCount)
-          break
-      } */
+    async deletePageDataAction({ dispatch }, payload: any) {
+      // 拼接url
+      // pageName id
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      // 删除
+      await deletePageDataById(pageUrl)
+      // 重新获取数据
+      dispatch('getPageListDataAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   },
   getters: {

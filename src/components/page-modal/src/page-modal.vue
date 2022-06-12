@@ -1,18 +1,11 @@
 <template>
-  <div class="page-modal">
-    <el-dialog
-      :title="modalConfig.title"
-      v-model="dialogVisible"
-      width="30%"
-      center
-      destroy-on-close
-    >
-      <hy-form v-bind="modalConfig" v-model="formData"></hy-form>
-      <slot></slot>
+  <div class="page-model">
+    <el-dialog v-model="dialogVisible" title="新建用户" width="30%" center>
+      <LhForm v-model="formData" v-bind="modalConfig"></LhForm>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleConfirmClick">确 定</el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -22,13 +15,12 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 
-import { userStore } from '@/store'
-
-import HyForm from '@/base-ui/LhFrom'
+import LhForm from '@/base-ui/LhFrom'
+import { forIn } from 'lodash'
 
 export default defineComponent({
   components: {
-    HyForm
+    LhForm
   },
   props: {
     modalConfig: {
@@ -38,7 +30,8 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
-    },
+    }
+    /*
     otherInfo: {
       type: Object,
       default: () => ({})
@@ -46,48 +39,24 @@ export default defineComponent({
     pageName: {
       type: String,
       required: true
-    }
+    } */
   },
   setup(props) {
-    // 1.绑定属性
-    const store = userStore()
-    const originFormData: any = {}
-    const formData = ref({ ...originFormData })
+    const dialogVisible = ref(false)
+    const formData = ref<any>({})
 
     watch(
       () => props.defaultInfo,
-      (newValue) => {
+      (newVal) => {
+        console.log(newVal)
+
         for (const item of props.modalConfig.formItems) {
-          formData.value[`${item.field}`] = newValue[`${item.field}`]
+          formData.value[`${item.field}`] = newVal[`${item.field}`]
         }
       }
     )
 
-    // 2.内部处理
-    const dialogVisible = ref(false)
-    const handleConfirmClick = () => {
-      dialogVisible.value = false
-      if (Object.keys(props.defaultInfo).length) {
-        // 编辑
-        store.dispatch('system/editPageDataAction', {
-          pageName: props.pageName,
-          queryInfo: { ...formData.value, ...props.otherInfo },
-          id: props.defaultInfo.id
-        })
-      } else {
-        // 新建
-        store.dispatch('system/newPageDataAction', {
-          pageName: props.pageName,
-          queryInfo: { ...formData.value, ...props.otherInfo }
-        })
-      }
-    }
-
-    return {
-      formData,
-      dialogVisible,
-      handleConfirmClick
-    }
+    return { dialogVisible, formData }
   }
 })
 </script>

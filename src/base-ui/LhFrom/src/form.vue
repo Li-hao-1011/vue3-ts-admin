@@ -124,8 +124,4 @@ export default defineComponent({
   }
 })
 </script>
-<style scoped lang="less">
-.lh-form {
-  padding: 22px 10px 0;
-}
-</style>
+<style scoped lang="less"></style>

@@ -11,10 +11,10 @@
     <div class="content">
       <el-table
         :data="listData"
-        @selection-change="handleSelectionChange"
-        v-bind="childrenProps"
         border
         style="width: 100%"
+        @selection-change="handleSelectionChange"
+        v-bind="childrenProps"
       >
         <el-table-column v-if="showSelectColumn" type="selection" align="center"> </el-table-column>
 
@@ -51,6 +51,7 @@
   </div>
 </template>
 <script lang="ts">
+import { log } from 'console'
 import { defineComponent, PropType } from 'vue'
 import { IPropList } from '../type/types'
 export default defineComponent({

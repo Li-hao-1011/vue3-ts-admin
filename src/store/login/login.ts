@@ -70,17 +70,17 @@ const loginModule: Module<ILoginState, IRootState> = {
       state.userInfo = JSON.parse(JSON.stringify(value))
     },
     changeUserMenus(state, value: any) {
-      state.userMenu = JSON.parse(JSON.stringify(value))
-
       // 获取到了 userMenus 与之对应的；路由列表
       const userRouters = mapMenusToRoutes(value)
 
       userRouters.forEach((route) => {
         router.addRoute('main', route)
       })
+      state.userMenu = JSON.parse(JSON.stringify(value))
 
       // 获取用户按钮的权限
       const permissions = mapMenusToPermissions(value)
+
       state.permissions = permissions
     }
   }

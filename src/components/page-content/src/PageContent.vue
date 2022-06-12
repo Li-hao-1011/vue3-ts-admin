@@ -3,10 +3,8 @@
     <LhTable
       :listData="dataList"
       :listCount="dataCount"
+      v-bind="contentTableConfig"
       :prop-list="contentTableConfig.propList"
-      :title="contentTableConfig.title"
-      :show-index-column="contentTableConfig.showIndexColumn"
-      :show-select-column="contentTableConfig.showSelectColumn"
       v-model:page="pageInfo"
     >
       <!-- v-model:page="pageInfo" -->
@@ -25,11 +23,13 @@
 
      -->
       <!-- <LhTable :list-data="list" v-bind="contentTableConfig"> -->
+
       <template #headerHandler>
-        <el-button type="primary"> 新建用户 </el-button>
+        <el-button v-if="isCreate" type="primary" @click="handleNewClick">
+          {{ contentTableConfig?.creatBtn ?? '新建' }}
+        </el-button>
       </template>
 
-      <!-- 作用域插槽 -->
       <template #enable="scope">
         <el-button plain :type="scope.row.enable ? 'success' : 'danger'" size="mini">
           {{ scope.row.enable ? '启用' : '禁用' }}
@@ -41,10 +41,19 @@
       <template #updateAt="scope">
         {{ $filters.formatTime(scope.row.updateAt) }}
       </template>
-      <template #handle>
+      <template #handler="scope">
         <div class="handle-btns">
-          <el-button v-if="isUpdate" size="small" text>编辑</el-button>
-          <el-button v-if="isUpdate" size="small" text type="danger">删除</el-button>
+          <el-button v-if="isUpdate" size="small" text @click="handleEditClick(scope.row)"
+            >编辑
+          </el-button>
+          <el-button
+            v-if="isDelete"
+            size="small"
+            text
+            type="danger"
+            @click="handleDeleteClick(scope.row)"
+            >删除</el-button
+          >
         </div>
       </template>
 
@@ -77,7 +86,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
 
     // 按钮是否显示
@@ -88,7 +98,7 @@ export default defineComponent({
 
     // 0.绑定pageInfo
     const pageInfo = ref({
-      currentPage: 0,
+      currentPage: 1,
       pageSize: 10
     })
     watch(pageInfo, () => getPageData())
@@ -97,13 +107,12 @@ export default defineComponent({
 
     // 2.获取数据
     const getPageData = (otherInfo: any = {}) => {
-      console.log('搜索-2')
       delete otherInfo.undefined
-      // if (!isQuery) return
+      if (!isQuery) return
       store.dispatch('system/getPageListDataAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,
           ...otherInfo
         }
@@ -113,7 +122,6 @@ export default defineComponent({
 
     // 从vuex中获取数据
     const dataList = computed(() => store.getters[`system/pageListData`](props.pageName))
-
     const dataCount = computed(() => store.getters[`system/pageCountData`](props.pageName))
 
     // 4.获取其他的动态插槽名称
@@ -125,6 +133,24 @@ export default defineComponent({
       return true
     })
 
+    // 删除操作
+    const handleDeleteClick = (item: any) => {
+      //
+      console.log('删除', item)
+
+      store.dispatch('system/deletePageDataAction', { id: item.id, pageName: props.pageName })
+    }
+
+    const handleEditClick = (item: any) => {
+      //
+      emit('editBtnClick', item)
+      console.log(item)
+    }
+    const handleNewClick = () => {
+      //
+      emit('newBtnClick')
+    }
+
     return {
       dataList,
       dataCount,
@@ -134,7 +160,10 @@ export default defineComponent({
       isCreate,
       isDelete,
       isUpdate,
-      isQuery
+      isQuery,
+      handleDeleteClick,
+      handleEditClick,
+      handleNewClick
     }
   }
 })
