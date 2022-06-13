@@ -19,12 +19,16 @@ const store = createStore<IRootState>({
   getters: {},
   actions: {
     async getInitalDataAction({ commit }) {
-      const { list: entireRoles } = await getPageList('/role/list', { offset: 0, size: 100 })
-      const { list: entireDepartments } = await getPageList('/department/list', {
+      const rolesResult = await getPageList('/role/list', { offset: 0, size: 100 })
+      const departmentsResult = await getPageList('/department/list', {
         offset: 0,
         size: 100
       })
-      const { list: entireMenus } = await getPageList('/menu/list', {})
+      const menusResult = await getPageList('/menu/list', {})
+      const { list: entireRoles } = rolesResult.data
+      const { list: entireDepartments } = departmentsResult.data
+      const { list: entireMenus } = menusResult.data
+
       commit('changeEntireRoles', entireRoles)
       commit('changeEntireDepartments', entireDepartments)
       commit('changeEntireMenus', entireMenus)
@@ -46,6 +50,7 @@ const store = createStore<IRootState>({
 
 export const setupStore = () => {
   store.dispatch('login/loadLocalLogin')
+  store.dispatch('getInitalDataAction')
 }
 
 // store.state.login.token

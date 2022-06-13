@@ -12,17 +12,22 @@
         ref="pageContentRef"
         :contentTableConfig="contentTableConfig"
         pageName="users"
-        @new-btn-click="handelNewData"
-        @edit-btn-click="handelEditData"
+        @new-btn-click="handleNewData"
+        @edit-btn-click="handleEditData"
       >
       </user-content>
     </div>
 
-    <PageModal ref="pageModalRef" :modalConfig="modalConfig" :defaultInfo="defaultInfo"></PageModal>
+    <PageModal
+      ref="pageModalRef"
+      :modalConfig="modalConfigRef"
+      :defaultInfo="modalInfo"
+      pageName="users"
+    ></PageModal>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, computed } from 'vue'
 // import { useStore } from 'vuex'
 
 import UserSearch from '@/components/page-search'
@@ -34,11 +39,12 @@ import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
 // import { IFormItem } from '@/base-ui/LhFrom'
-// import { modalConfig } from './config/modal.config'
 
 import { usePageSearch } from '@/hooks/usePageSearch'
-// import { usePageModal } from '@/hooks/usePageModal'
+import { usePageModal } from '@/hooks/usePageModal'
 // import PageConetnt from '@/components/page-content'
+
+import { userStore } from '@/store'
 
 type IHandler = () => void
 
@@ -46,45 +52,62 @@ export default defineComponent({
   name: 'SystemUsre',
   components: { UserSearch, UserContent, PageModal },
   setup() {
-    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const store = userStore()
 
+    // 当 entireDepartments entireRoles改变时重新获取 options
+    const modalConfigRef = computed(() => {
+      const departmentItem = modalConfig.formItems?.find((item) => item.field === 'departmentId')
+      departmentItem!.options = store.state.entireDepartments.map((item) => ({
+        label: item.name,
+        value: item.id
+      }))
+
+      const rolesItem = modalConfig.formItems?.find((item) => item.field === 'roleId')
+      rolesItem!.options = store.state.entireRoles.map((item) => ({
+        label: item.name,
+        value: item.id
+      }))
+      return modalConfig
+    })
+
+    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const resetBtnClick: IHandler = handleResetClick as IHandler
     const queryBtnClick: IHandler = handleQueryClick as IHandler
 
-    const pageModalRef = ref<InstanceType<typeof PageModal>>()
-    const defaultInfo = ref({})
-    const handelEditData = (item: any) => {
-      /** */
-      pageModalRef.value && (pageModalRef.value.dialogVisible = true)
-      defaultInfo.value = { ...item }
-
-      console.log(defaultInfo.value, item)
+    // 新增、编辑
+    // callBack处理输入框是否显示
+    const newCallBack = () => {
+      modalConfig.title = '新建用户'
+      const passwordItem = modalConfig.formItems?.find((item) => item.field === 'password')
+      passwordItem!.isHidden = false
     }
-    const handelNewData = () => {
-      /** */
+    const editCallback = () => {
+      modalConfig.title = '编辑用户'
 
-      pageModalRef.value && (pageModalRef.value.dialogVisible = true)
+      const passwordItem = modalConfig.formItems?.find((item) => item.field === 'password')
+      passwordItem!.isHidden = true
     }
+    const [modalInfo, pageModalRef, handleNewDataFn, handleEditDataFn] = usePageModal(
+      newCallBack,
+      editCallback
+    )
+    const handleEditData: IHandler = handleEditDataFn as IHandler
+    const handleNewData: IHandler = handleNewDataFn as IHandler
 
     return {
       contentTableConfig,
       searchFormConfig,
-      // formData,
-      // propList,
-      // showIndexColumn,
-      // showSelectColumn,
-      // handleSelectionChange,
-      // title,
+
       /*  */
       pageContentRef,
       resetBtnClick,
       queryBtnClick,
 
-      modalConfig,
-      handelEditData,
-      handelNewData,
+      modalConfigRef,
+      handleEditData,
+      handleNewData,
       pageModalRef,
-      defaultInfo
+      modalInfo
     }
   }
 })

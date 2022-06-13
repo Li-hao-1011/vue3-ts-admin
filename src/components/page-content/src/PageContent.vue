@@ -144,7 +144,6 @@ export default defineComponent({
     const handleEditClick = (item: any) => {
       //
       emit('editBtnClick', item)
-      console.log(item)
     }
     const handleNewClick = () => {
       //

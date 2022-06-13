@@ -14,3 +14,17 @@ export function deletePageDataById(url: string) {
     url
   })
 }
+
+export function createPageData(url: string, newData: any) {
+  return server.post<IDataType>({
+    url,
+    data: newData
+  })
+}
+
+export function editPageData(url: string, newData: any) {
+  return server.patch<IDataType>({
+    url,
+    data: newData
+  })
+}

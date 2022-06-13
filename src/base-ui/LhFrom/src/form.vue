@@ -36,6 +36,7 @@
                     v-for="option in item.options"
                     :key="option.value"
                     :value="option.value"
+                    :label="option.label"
                     >{{ option.label }}</el-option
                   >
                 </el-select>
@@ -108,15 +109,6 @@ export default defineComponent({
     const handleValueChange = (value: any, field: string) => {
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
-
-    // console.log(123, props.modelValue)
-
-    /*    const handleUpdataValue = (value: any, key: string) => {
-
-      console.log(value, key)
-
-      emit('update:modelValue', { ...props.modelValue, [key]: value })
-    } */
     return {
       formData,
       handleValueChange

@@ -8,8 +8,8 @@ export const modalConfig: IForm = {
       field: 'realname',
       type: 'input',
       label: '真实姓名',
-      placeHolder: '请输入真实姓名',
-      rules: [{ required: true }]
+      placeHolder: '请输入真实姓名'
+      // rules: [{ required: true }]
     },
     {
       field: 'password',
