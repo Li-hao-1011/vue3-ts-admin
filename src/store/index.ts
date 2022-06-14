@@ -50,7 +50,7 @@ const store = createStore<IRootState>({
 
 export const setupStore = () => {
   store.dispatch('login/loadLocalLogin')
-  store.dispatch('getInitalDataAction')
+  // store.dispatch('getInitalDataAction')
 }
 
 // store.state.login.token

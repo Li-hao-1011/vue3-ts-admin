@@ -22,13 +22,16 @@ const loginModule: Module<ILoginState, IRootState> = {
   },
   getters: {},
   actions: {
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // login
       const loginResult = await accountLoginRequest(payload)
 
       const { id, token } = loginResult.data
       commit('changeToken', token)
       localCatch.setCache('token', token, 'localStorage')
+
+      // 获取初始化信息（角色、部门等）
+      dispatch('getInitalDataAction', null, { root: true })
 
       // 请求用户信息
       const { data: userInfo } = await requestUserInfoById(id)
@@ -47,10 +50,11 @@ const loginModule: Module<ILoginState, IRootState> = {
       // console.log('执行 phoneLoginAction', payload, commit)
     },
 
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = localCatch.getCache('token', 'localStorage')
       if (token) {
         commit('changeToken', token)
+        dispatch('getInitalDataAction', null, { root: true })
       }
       const userInfo = localCatch.getCache('userInfo', 'localStorage')
       if (userInfo) {

@@ -10,7 +10,7 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>
+        <el-dropdown-item @click="handleLogout">
           <el-icon><CircleClose /></el-icon>
           退出登录
         </el-dropdown-item>
@@ -24,15 +24,22 @@
 import { defineComponent, computed } from 'vue'
 import { ArrowDown, UserFilled, CircleClose } from '@element-plus/icons-vue'
 import { userStore } from '@/store'
+import localCache from '@/utils/cache'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'UserInfo',
   components: { ArrowDown, UserFilled, CircleClose },
   setup() {
     const store = userStore()
+    const router = useRouter()
     const name = computed(() => store.state.login.userInfo.name)
-
-    return { name }
+    const handleLogout = () => {
+      //
+      localCache.deleteCache('token', 'localStorage')
+      router.push('/main')
+    }
+    return { name, handleLogout }
   }
 })
 </script>

@@ -33,7 +33,7 @@ export const usePageModal = (newHandleCallback?: CallbackFn, editHandleCallback?
   const handleEditData = (item: any) => {
     pageModalRef.value && (pageModalRef.value.dialogVisible = true)
     modalInfo.value = { ...item }
-    editHandleCallback && editHandleCallback()
+    editHandleCallback && editHandleCallback(item)
   }
   const handleNewData = () => {
     modalInfo.value = {}

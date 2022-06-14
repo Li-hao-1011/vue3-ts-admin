@@ -16,7 +16,7 @@ export const contentTableConfig: contentTableConfig = {
     { prop: 'intro', label: '权限', minWiath: '100', slotName: 'intro' },
     { prop: 'createAt', label: '创建时间', minWiath: '200', slotName: 'createAt' },
     { prop: 'updateAt', label: '更新时间', minWiath: '200', slotName: 'updateAt' },
-    { label: '操作', minWiath: '120', slotName: 'handle' }
+    { label: '操作', minWiath: '120', slotName: 'handler' }
   ],
 
   showIndexColumn: true,
