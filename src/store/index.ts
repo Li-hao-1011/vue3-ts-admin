@@ -2,10 +2,11 @@ import { createStore, Store, useStore as useVuexStore } from 'vuex'
 
 import { IRootState } from './types'
 import type { IStore } from './types'
-import { getPageList } from '@/service/mian/system/system'
+import { getPageList } from '@/service/main/system/system'
 
 import login from './login/login'
 import system from './main/system/system'
+import dashboard from './main/analys/dashboard'
 
 const store = createStore<IRootState>({
   state: () => {
@@ -13,7 +14,8 @@ const store = createStore<IRootState>({
       name: 'lhhhhh',
       entireRoles: [],
       entireDepartments: [],
-      entireMenus: []
+      entireMenus: [],
+      isCollapse: false
     }
   },
   getters: {},
@@ -43,9 +45,13 @@ const store = createStore<IRootState>({
     },
     changeEntireMenus(state, entireMenus) {
       state.entireMenus = entireMenus
+    },
+
+    changeCollapse(state, isCollapse: boolean) {
+      state.isCollapse = isCollapse
     }
   },
-  modules: { login, system }
+  modules: { login, system, dashboard }
 })
 
 export const setupStore = () => {
@@ -53,13 +59,7 @@ export const setupStore = () => {
   // store.dispatch('getInitalDataAction')
 }
 
-// store.state.login.token
-
-// export function useStore(): Store<IStore> {
-//   return useVuexStore()
-// }
-
-export function userStore(): Store<IStore> {
+export function useStore(): Store<IStore> {
   return useVuexStore()
 }
 export default store

@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { IBreadcrumb } from '@/base-ui/Breadcrumb'
-import menu from '@/router/main/system/menu/menu'
 
 let firstMenu: any = null
 

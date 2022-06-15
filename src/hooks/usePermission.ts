@@ -1,7 +1,7 @@
-import { userStore } from '@/store'
+import { useStore } from '@/store'
 
 export function usePermission(pageName: string, handle: string) {
-  const store = userStore()
+  const store = useStore()
   const permissions = store.state.login.permissions
   const handlePermission = `${pageName}:${handle}`
 

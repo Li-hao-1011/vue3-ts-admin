@@ -45,7 +45,7 @@ import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 import { usePageModal } from '@/hooks/usePageModal'
-import { userStore } from '@/store'
+import { useStore } from '@/store'
 import { getMenuLeafKeys } from '@/utils/mapMenus'
 
 type IHandler = () => void
@@ -56,7 +56,7 @@ export default defineComponent({
 
   setup() {
     const menuTreeRef = ref<InstanceType<typeof ElTree>>()
-    const store = userStore()
+    const store = useStore()
     const otherInfo = ref({})
     const handleCheckClick = (data1: any, data2: any) => {
       //

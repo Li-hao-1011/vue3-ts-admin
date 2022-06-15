@@ -44,7 +44,7 @@ import { usePageSearch } from '@/hooks/usePageSearch'
 import { usePageModal } from '@/hooks/usePageModal'
 // import PageConetnt from '@/components/page-content'
 
-import { userStore } from '@/store'
+import { useStore } from '@/store'
 
 type IHandler = () => void
 
@@ -52,7 +52,7 @@ export default defineComponent({
   name: 'SystemUsre',
   components: { UserSearch, UserContent, PageModal },
   setup() {
-    const store = userStore()
+    const store = useStore()
 
     // 当 entireDepartments entireRoles改变时重新获取 options
     const modalConfigRef = computed(() => {

@@ -23,7 +23,7 @@
 import { defineComponent, ref, watch } from 'vue'
 
 import LhForm from '@/base-ui/LhFrom'
-import { userStore } from '@/store'
+import { useStore } from '@/store'
 
 export default defineComponent({
   components: {
@@ -48,7 +48,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = userStore()
+    const store = useStore()
 
     const dialogVisible = ref(false)
     const formData = ref<any>({})

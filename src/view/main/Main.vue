@@ -22,14 +22,18 @@
 import { defineComponent, ref } from 'vue'
 import NavMenu from '@/components/nav-menu'
 import NavHeader from '@/components/nav-header'
+import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'MainPage',
   components: { NavMenu, NavHeader },
   setup() {
+    const store = useStore()
     const isCollapse = ref(false)
     const handleFoldChange = (value: boolean) => {
       isCollapse.value = !value
+
+      store.commit('changeCollapse', isCollapse)
     }
     return { handleFoldChange, isCollapse }
   }

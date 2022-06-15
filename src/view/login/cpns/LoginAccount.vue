@@ -50,8 +50,8 @@ export default defineComponent({
           localCache.setCache(storageName, account.name, storageType)
           localCache.setCache(storageValue, account.password, storageType)
         } else {
-          localCache.deleteCache(storageName, storageType)
-          localCache.deleteCache(storageValue, storageType)
+          // localCache.deleteCache(storageName, storageType)
+          // localCache.deleteCache(storageValue, storageType)
         }
 
         // 登录密码

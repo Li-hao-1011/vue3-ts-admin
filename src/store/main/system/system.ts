@@ -2,13 +2,13 @@ import { Module } from 'vuex'
 
 import { IRootState } from '@/store/types'
 import { ISystemState, IPagePayload } from './types'
-import { getPageListData } from '@/service/mian/user'
+import { getPageListData } from '@/service/main/user'
 import {
   getPageList,
   deletePageDataById,
   createPageData,
   editPageData
-} from '@/service/mian/system/system'
+} from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,

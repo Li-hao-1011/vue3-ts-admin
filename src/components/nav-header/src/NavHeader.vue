@@ -19,7 +19,7 @@ import { Expand, Fold } from '@element-plus/icons-vue'
 import UserInfo from './UserInfo.vue'
 import LhBreadcrumb from '@/base-ui/Breadcrumb'
 import { pathMapBreadcrumbs } from '@/utils/mapMenus'
-import { userStore } from '@/store/index'
+import { useStore } from '@/store/index'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
     }
 
     // 面包屑数据
-    const store = userStore()
+    const store = useStore()
     const breadcrumbs = computed(() => {
       const route = useRoute()
       const userMenus = computed(() => store.state.login.userMenu).value

@@ -23,7 +23,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { ArrowDown, UserFilled, CircleClose } from '@element-plus/icons-vue'
-import { userStore } from '@/store'
+import { useStore } from '@/store'
 import localCache from '@/utils/cache'
 import { useRouter } from 'vue-router'
 
@@ -31,7 +31,7 @@ export default defineComponent({
   name: 'UserInfo',
   components: { ArrowDown, UserFilled, CircleClose },
   setup() {
-    const store = userStore()
+    const store = useStore()
     const router = useRouter()
     const name = computed(() => store.state.login.userInfo.name)
     const handleLogout = () => {

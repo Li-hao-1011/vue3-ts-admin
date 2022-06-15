@@ -50,7 +50,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { Aim, Grid } from '@element-plus/icons-vue'
 
 // import { mapState } from 'vuex'
-import { userStore } from '@/store/index'
+import { useStore } from '@/store/index'
 import { pathMapToMenu } from '@/utils/mapMenus'
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
       children: any[]
     }
 
-    const store = userStore()
+    const store = useStore()
     const router = useRouter()
 
     const userMenus = computed(() => store.state.login.userMenu)
