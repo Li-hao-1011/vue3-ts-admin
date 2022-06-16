@@ -72,8 +72,8 @@ export default defineComponent({
     }
     const editCallback = (data: any) => {
       modalConfig.title = '编辑角色'
-      console.log(data.menuList)
-      console.log(getMenuLeafKeys(data.menuList))
+      // console.log(data.menuList)
+      // console.log(getMenuLeafKeys(data.menuList))
 
       nextTick(() => {
         menuTreeRef.value?.setCheckedKeys(getMenuLeafKeys(data.menuList), false)

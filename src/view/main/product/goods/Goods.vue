@@ -2,12 +2,14 @@
   <div>
     <PageContent :contentTableConfig="contentTableConfig" pageName="goods">
       <template #imgUrl="scope">
+        <!-- <teleport to="body"> -->
         <el-image
           style="width: 100px; height: 100px"
           :src="scope.row.imgUrl"
           :preview-src-list="[scope.row.imgUrl]"
-          fit="contain"
+          preview-teleported
         ></el-image>
+        <!-- </teleport> -->
       </template>
       <template #oldPrice="scope"> {{ '￥' + scope.row.oldPrice }} </template>
     </PageContent>

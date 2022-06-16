@@ -1,5 +1,9 @@
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
+
+import ChinaMapData from '../data/china.json'
+echarts.registerMap('china', ChinaMapData)
+
 export default function (el: HTMLElement) {
   const echartsInstance = echarts.init(el)
 
@@ -8,7 +12,6 @@ export default function (el: HTMLElement) {
   }
 
   const updataResize = (): void => {
-    console.log('改变了' + 'echartsInstance.resize()')
     setTimeout(() => {
       echartsInstance.resize()
     }, 200)

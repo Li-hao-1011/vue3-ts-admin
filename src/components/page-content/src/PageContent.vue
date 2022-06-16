@@ -103,8 +103,6 @@ export default defineComponent({
     })
     watch(pageInfo, () => getPageData())
 
-    // let otherQueryInfo = {}
-
     // 2.获取数据
     const getPageData = (otherInfo: any = {}) => {
       delete otherInfo.undefined
@@ -135,18 +133,13 @@ export default defineComponent({
 
     // 删除操作
     const handleDeleteClick = (item: any) => {
-      //
-      console.log('删除', item)
-
       store.dispatch('system/deletePageDataAction', { id: item.id, pageName: props.pageName })
     }
 
     const handleEditClick = (item: any) => {
-      //
       emit('editBtnClick', item)
     }
     const handleNewClick = () => {
-      //
       emit('newBtnClick')
     }
 

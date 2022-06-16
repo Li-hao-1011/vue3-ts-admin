@@ -11,7 +11,7 @@ import { setupStore } from './store/index'
 
 const app = createApp(App)
 app.use(store)
-//
+
 setupStore()
 app.use(router)
 

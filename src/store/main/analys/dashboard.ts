@@ -28,10 +28,10 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
       const categoryGoodsSaleResult = await getCategoryGoodsSale()
       const categoryGoodsCountResult = await getCategoryGoodsCount()
 
-      commit('changeCategoryGoodsCount', categoryGoodsCountResult)
-      commit('changeCategoryGoodsSale', categoryGoodsSaleResult)
-      commit('changeCategoryGoodsFavor', categoryGoodsFavorResult)
-      commit('changeAddressGoodsSale', addressGoodsSaleResult)
+      commit('changeCategoryGoodsCount', categoryGoodsCountResult.data)
+      commit('changeCategoryGoodsSale', categoryGoodsSaleResult.data)
+      commit('changeCategoryGoodsFavor', categoryGoodsFavorResult.data)
+      commit('changeAddressGoodsSale', addressGoodsSaleResult.data)
     }
   },
   mutations: {

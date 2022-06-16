@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, defineProps, withDefaults, defineEmits, watch, nextTick } from 'vue'
+import { ref, onMounted, defineProps, withDefaults, watch, computed, watchEffect } from 'vue'
 // import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import useEcharts from '../hooks/useEcharts'
@@ -11,7 +11,7 @@ const props = withDefaults(
     width?: string
     height?: string
     options: EChartsOption
-    isCollapse: boolean
+    isCollapse?: boolean
   }>(),
   {
     width: '100%',
@@ -19,37 +19,25 @@ const props = withDefaults(
     isCollapse: false
   }
 )
-// const emit = defineEmits(['updataIsCollapse'])
 
 const chartRef = ref<HTMLElement>()
 
 onMounted(() => {
-  // const echartsInstance = echarts.init(chartRef.value!, 'light', {
-  //   renderer: 'svg'
-  // })
+  const { updataResize, setOptions } = useEcharts(chartRef.value!)
 
-  // props.options && echartsInstance.setOption(props.options)
-
-  const { updataResize, setOptions, echartsInstance } = useEcharts(chartRef.value!)
-  setOptions(props.options)
-  // emit('updataIsCollapse', updataResize)
-  // emit('updataIsCollapse')
-  /*   watch(
-    () => props.isCollapse,
-    () => {
-      // updataResize()
-      nextTick(() => {
-        echartsInstance.resize()
-      })
-    },
-    { immediate: true }
-  ) */
+  watchEffect(() => {
+    setOptions(props.options)
+  })
+  const isChange = computed(() => props.isCollapse)
+  watch(isChange, () => {
+    updataResize()
+  })
 })
 </script>
 
 <template>
   <div classecharts>
-    <div ref="chartRef" :style="{ width: width, height: height }"></div>
+    <div ref="chartRef" :style="{ width: width, height: '360px' }"></div>
   </div>
 </template>
 
