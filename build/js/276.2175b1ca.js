@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkvue3_ts_admin"]=self["webpackChunkvue3_ts_admin"]||[]).push([[276],{6276:function(e,n,t){t.r(n),t.d(n,{default:function(){return i}});var r=t(3396);function u(e,n,t,u,a,s){return(0,r.wg)(),(0,r.iD)("h1",null,"SyetemDepartment")}var a=(0,r.aZ)({name:"SyetemDepartment",setup(){return{}}}),s=t(89);const c=(0,s.Z)(a,[["render",u]]);var i=c}}]);
+//# sourceMappingURL=276.2175b1ca.js.map

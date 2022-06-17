@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkvue3_ts_admin"]=self["webpackChunkvue3_ts_admin"]||[]).push([[910],{910:function(e,n,r){r.r(n),r.d(n,{default:function(){return i}});var t=r(3396);function u(e,n,r,u,a,s){return(0,t.wg)(),(0,t.iD)("div")}var a=(0,t.aZ)({name:"ProductCategory",setup(){return{}}}),s=r(89);const c=(0,s.Z)(a,[["render",u]]);var i=c}}]);
+//# sourceMappingURL=910.0e164bd4.js.map
